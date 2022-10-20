@@ -1,0 +1,50 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: booking-web
+data:
+  REACT_APP_API_HOST: http://raspikube0:3080
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: booking-web
+spec:
+  type: LoadBalancer
+  selector:
+    app: booking-web
+  ports:
+  - port: 3000
+    targetPort: booking-web
+
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: booking-web
+spec:
+  selector:
+    matchLabels:
+      app: booking-web
+  template:
+    metadata:
+      labels:
+        app: booking-web
+    spec:
+      containers:
+      - name: booking-web
+        image: maxandriani/booking-app-web:0.0.0-rc2
+        imagePullPolicy: Always
+        envFrom:
+          - configMapRef:
+              name: booking-web
+        resources:
+          limits:
+            memory: "128Mi"
+            cpu: "200m"
+        ports:
+        - containerPort: 80
+          name: booking-web

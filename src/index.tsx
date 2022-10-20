@@ -1,18 +1,36 @@
-import React from 'react';
+import React, { Suspense } from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
-import App from './App';
 import reportWebVitals from './reportWebVitals';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
-import RouteErrorBoundary from './errors/RouteErrorBoundary';
+import RouteErrorBoundary from './layouts/errors/RouteErrorBoundary';
+import DashboardView from './views/dashboards/DashboardView';
+import PlaceIndexView from './views/places/PlaceIndexView';
+import PlaceEditView from './views/places/PlaceEditView';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import NewPlaceView from './views/places/NewPlaceView';
 
 const router = createBrowserRouter([
   {
-    path: "/",
-    element: <App />,
+    path: '/',
+    element: <DashboardView />,
     errorElement: <RouteErrorBoundary />
   },
+  {
+    path: 'places',
+    element: <PlaceIndexView />
+  },
+  {
+    path: 'places/new',
+    element: <NewPlaceView />
+  },
+  {
+    path: 'places/:placeId',
+    element: <PlaceEditView />
+  }
 ]);
+
+export const queryClient = new QueryClient()
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
@@ -20,7 +38,11 @@ const root = ReactDOM.createRoot(
 
 root.render(
   <React.StrictMode>
-    <RouterProvider router={router} />
+    <QueryClientProvider client={queryClient}>
+      <Suspense fallback={<><p>Carregando...</p></>}>
+        <RouterProvider router={router} />
+      </Suspense>
+    </QueryClientProvider>
   </React.StrictMode>
 );
 
