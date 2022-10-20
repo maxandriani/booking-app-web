@@ -50,11 +50,7 @@ function PlaceCardActions({ place, onDeleted }: PlaceCardActionsProps) {
   )
 }
 
-export type PlaceIndexViewProps = {
-
-};
-
-export default function PlaceIndexView({ }: PlaceIndexViewProps) {
+export default function PlaceIndexView() {
   const [filters, setFilters] = useState<IGetPlacesQuery | undefined>(undefined);
   const { data, error, isSuccess, isError, isFetching, refetch } = useQuery(['places', filters], ({ queryKey: [_, filters] }) => getPlacesCollection(filters as IGetPlacesQuery));
   const navigate = useNavigate();

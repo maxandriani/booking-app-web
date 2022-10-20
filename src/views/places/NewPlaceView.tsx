@@ -12,11 +12,7 @@ import AppMainBar from "../../layouts/structure/AppMainBar";
 import AppPageTitle from "../../layouts/structure/AppPageTitle";
 import { createPlace, ICreateUpdatePlaceBody, IPlaceResponse } from "../../services/places-api";
 
-export type PlaceEditViewProps = {
-
-};
-
-export default function NewPlaceView({ }: PlaceEditViewProps) {
+export default function NewPlaceView() {
   const navigate = useNavigate();
   const { mutate, isError, isLoading, isSuccess, error } = useMutation<IPlaceResponse, Error, ICreateUpdatePlaceBody>(
     place => createPlace(place),

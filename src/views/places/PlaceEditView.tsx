@@ -13,11 +13,7 @@ import AppMainBar from "../../layouts/structure/AppMainBar";
 import AppPageTitle from "../../layouts/structure/AppPageTitle";
 import { getPlaceByKey, ICreateUpdatePlaceBody, IPlaceResponse, updatePlace } from "../../services/places-api";
 
-export type PlaceEditViewProps = {
-
-};
-
-export default function PlaceEditView({ }: PlaceEditViewProps) {
+export default function PlaceEditView() {
   const navigate = useNavigate();
   const { placeId } = useParams();
   const [searchParams] = useSearchParams();
