@@ -1,16 +1,16 @@
-import React, { useEffect, useRef, useState } from "react";
+import { useMutation } from "@tanstack/react-query";
+import { useEffect, useState } from "react";
+import { MdArrowBack } from 'react-icons/md';
 import { useNavigate } from "react-router-dom";
+import PlaceForm from "../../components/places/PlaceForm";
 import { IconButton } from "../../layouts/buttons/Button";
+import Alert from "../../layouts/communications/Alerts";
+import AppContent from "../../layouts/structure/AppContent";
 import AppHeader from "../../layouts/structure/AppHeader";
 import AppLayout from "../../layouts/structure/AppLayout";
 import AppMainBar from "../../layouts/structure/AppMainBar";
-import { MdArrowBack } from 'react-icons/md';
-import AppContent from "../../layouts/structure/AppContent";
 import AppPageTitle from "../../layouts/structure/AppPageTitle";
 import { createPlace, ICreateUpdatePlaceBody, IPlaceResponse } from "../../services/places-api";
-import { useMutation } from "@tanstack/react-query";
-import Alert from "../../layouts/communications/Alerts";
-import PlaceForm from "../../components/places/PlaceForm";
 
 export type PlaceEditViewProps = {
 

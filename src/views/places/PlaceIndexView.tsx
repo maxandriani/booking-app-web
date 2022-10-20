@@ -1,21 +1,21 @@
 import { useQuery } from "@tanstack/react-query";
 import React, { useState } from "react";
+import { MdAddCircleOutline, MdDeleteForever, MdOutlineFilterList, MdOutlineSearch, MdOutlineSort } from 'react-icons/md';
 import { useNavigate } from "react-router-dom";
+import { PlaceCard } from "../../components/places/PlaceCard";
+import PlaceCardList from "../../components/places/PlaceCardList";
 import { Button, IconButton } from "../../layouts/buttons/Button";
+import Alert from "../../layouts/communications/Alerts";
+import { VerticalDivider } from "../../layouts/crafts/Divider";
+import { FilterForm } from "../../layouts/filters/FilterForm";
+import { InputBase } from "../../layouts/inputs/Inputs";
+import { AppActionBar } from "../../layouts/structure/AppActionBar";
 import AppContent from "../../layouts/structure/AppContent";
 import AppHeader from "../../layouts/structure/AppHeader";
 import AppLayout from "../../layouts/structure/AppLayout";
 import AppMainBar from "../../layouts/structure/AppMainBar";
 import AppPageTitle from "../../layouts/structure/AppPageTitle";
 import { deletePlace, getPlacesCollection, IGetPlacesQuery, IPlaceResponse } from "../../services/places-api";
-import { MdAddCircleOutline, MdOutlineSearch, MdOutlineFilterList, MdOutlineSort, MdDeleteForever, MdOutlineDeleteSweep } from 'react-icons/md';
-import PlaceCardList from "../../components/places/PlaceCardList";
-import { PlaceCard } from "../../components/places/PlaceCard";
-import { InputBase } from "../../layouts/inputs/Inputs";
-import { VerticalDivider } from "../../layouts/crafts/Divider";
-import Alert from "../../layouts/communications/Alerts";
-import { AppActionBar } from "../../layouts/structure/AppActionBar";
-import { FilterForm } from "../../layouts/filters/FilterForm";
 
 type PlaceCardActionsProps = {
   place: IPlaceResponse;

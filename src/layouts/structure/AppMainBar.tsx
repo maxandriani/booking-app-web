@@ -1,7 +1,6 @@
-import React from 'react';
-import styled from 'styled-components';
-import { MdLocationOn, MdHomeFilled } from "react-icons/md";
+import { MdHomeFilled, MdLocationOn } from "react-icons/md";
 import { useLocation, useNavigate } from 'react-router-dom';
+import styled from 'styled-components';
 
 const AppMainBarBase = styled.nav`
   display: flex;
@@ -81,7 +80,7 @@ function AppMainBar({...props}: AppMainBarProps) {
   const location = useLocation();
 
   function isActive(path: string) {
-    return location.pathname == path;
+    return location.pathname === path;
   }
 
   console.debug(location);

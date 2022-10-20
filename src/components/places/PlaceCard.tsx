@@ -1,5 +1,4 @@
 import { ReactNode } from "react";
-import styled from "styled-components";
 import { Card, CardActions, CardDescription, CardHeader, CardTitle } from "../../layouts/cards/Card";
 import { IPlaceResponse } from "../../services/places-api";
 

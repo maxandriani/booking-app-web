@@ -1,6 +1,5 @@
 import styled, { StyledComponent } from "styled-components";
-import { Card, CardActions, CardContent } from "../cards/Card";
-import { Paper } from "../crafts/Paper";
+import { Card, CardContent } from "../cards/Card";
 import { Label } from "../crafts/Text";
 import { theme } from "../theme";
 

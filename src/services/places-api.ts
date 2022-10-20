@@ -45,7 +45,7 @@ export interface ICreateUpdatePlaceBody {
 export async function getPlacesCollection(query?: IGetPlacesQuery, signal?: AbortSignal): Promise<ICollectionResponse<IPlaceResponse>> {
   let queryStr = '';
   
-  if (query != undefined) {
+  if (query !== undefined) {
     var queryParser = new URLSearchParams();
     for (const [k, v] of Object.entries(query))
       queryParser.append(k, v.toString());
@@ -100,14 +100,3 @@ export async function deletePlace(id: string, signal?: AbortSignal): Promise<voi
   return fetch(`${env.REACT_APP_API_HOST}/api/v1/places/${id}`, { signal, method: 'delete' })
     .then(() => undefined);
 }
-
-/**
- * Orchestrates place api operations.
- */
-export default {
-  getCollection: getPlacesCollection,
-  get: getPlaceByKey,
-  create: createPlace,
-  update: updatePlace,
-  delete: deletePlace
-};

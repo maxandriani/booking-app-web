@@ -1,10 +1,10 @@
-import React, { useEffect } from 'react';
+import { useEffect } from 'react';
+import { MdDeleteForever } from 'react-icons/md';
 import styled, { css } from 'styled-components';
 import { IconButton } from '../buttons/Button';
-import { MdDeleteForever } from 'react-icons/md';
 import { Paper } from '../crafts/Paper';
+import { Text } from '../crafts/Text';
 import { theme } from '../theme';
-import { Label, Text } from '../crafts/Text';
 
 type AlertPaperProps = {
   level?: 'success' | 'error' | 'info' | 'warning';
@@ -83,7 +83,7 @@ function Alert({ message, timeout, level = 'success', onClose }: AlertProps) {
     return () => {
       if (st !== undefined) clearTimeout(st);
     }
-  }, []);
+  }, [onClose, timeout]);
 
   return (
     <AlertPaper level={level}>
