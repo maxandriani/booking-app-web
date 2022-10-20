@@ -54,7 +54,7 @@ jobs:
           ###### End of Repository/Build Configurations ######
           skip_api_build: true
         env: # Add environment variables here
-          REACT_APP_API_HOST: https://bookingapi.maxandriani.art.br
+          REACT_APP_API_HOST: ${{ secrets.REACT_APP_API_HOST }}
 
   close_pull_request_job:
     permissions:
