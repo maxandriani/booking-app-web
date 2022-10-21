@@ -1,8 +1,8 @@
 import { MdHomeFilled, MdLocationOn } from "react-icons/md";
 import { useLocation, useNavigate } from 'react-router-dom';
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 
-const AppMainBarBase = styled.nav`
+const AppMainBarBase = styled.nav(({theme}) => css`
   display: flex;
   align-content: center;
   justify-content: center;
@@ -14,31 +14,28 @@ const AppMainBarBase = styled.nav`
 
   padding: 0.5rem;
   gap: 1rem;
-  /* background: #FF512F;
-  background: linear-gradient(to right, #DD2476, #FF512F); */
 
-  background: #cc2b5e;
-  background: linear-gradient(115deg, #753a88, #cc2b5e);
-`;
+  background: ${theme.navBar.surface};
+`);
 
 const NavItemIcon = styled.span``;
 const NavItemDescription = styled.span``;
 
 type NavItemProps = {
-  active?: boolean;
+  current?: boolean;
 };
 
-const NavItem = styled.button<NavItemProps>(props => `
+const NavItem = styled.button<NavItemProps>(({ theme, current }) => css`
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-items: center;
   gap: 0.2rem;
   
-  background: transparent;
-  border: none;
-  border-radius: 0.5rem;
-  color: ${(props?.active) ? '#feac13' : 'rgba(255,255,255,0.7)'};
+  color: ${(!!current) ? theme.navBar.button.current.color : theme.navBar.button.default.color};
+  background: ${(!!current) ? theme.navBar.button.current.background : theme.navBar.button.default.background};;
+  border: ${(!!current) ? theme.navBar.button.current.border : theme.navBar.button.default.border};;
+  border-radius: ${theme.border.radius.medium};
   transition: .5s color;
 
   ${NavItemIcon} {
@@ -56,18 +53,20 @@ const NavItem = styled.button<NavItemProps>(props => `
   }
   
   :focus-visible {
-    outline-color: #FF512F;
-    outline-width: 2px;
-    outline-style: solid;
+    outline-color: ${theme.border.focusVisible};
   }
 
   :hover {
     cursor: pointer;
-    color: ${(props?.active) ? '#feac13' : 'rgba(255,255,255,0.9)'};
+    color: ${(!!current) ? theme.navBar.button.current.color : theme.navBar.button.hover.color};
+    background: ${theme.navBar.button.hover.background};
+    border: ${theme.navBar.button.hover.border};
   }
 
   :active {
-    color: #FF512F;
+    color: ${theme.navBar.button.active.color};
+    background: ${theme.navBar.button.active.background};
+    border: ${theme.navBar.button.active.border};
   }
 `);
 
@@ -79,19 +78,19 @@ function AppMainBar({...props}: AppMainBarProps) {
   const navigate = useNavigate();
   const location = useLocation();
 
-  function isActive(path: string) {
-    return location.pathname === path;
+  function isCurrent(path: string) {
+    return location.pathname === path || (path !== '/' && location.pathname.startsWith(path));
   }
 
   console.debug(location);
 
   return (
     <AppMainBarBase {...props}>
-      <NavItem onClick={() => navigate('/')} active={isActive('/')}>
+      <NavItem onClick={() => navigate('/')} current={isCurrent('/')}>
         <NavItemIcon><MdHomeFilled /></NavItemIcon>
         <NavItemDescription>Painel</NavItemDescription>
       </NavItem>
-      <NavItem onClick={() => navigate('/places')} active={isActive('/places')}>
+      <NavItem onClick={() => navigate('/places')} current={isCurrent('/places')}>
         <NavItemIcon><MdLocationOn /></NavItemIcon>
         <NavItemDescription>Casas</NavItemDescription>
       </NavItem>

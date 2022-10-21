@@ -1,19 +1,26 @@
 import React, { ReactNode } from 'react';
-import { createGlobalStyle } from 'styled-components';
+import { createGlobalStyle, css } from 'styled-components';
 
-const GlobalStyles = createGlobalStyle`
+const GlobalStyles = createGlobalStyle(({theme}) => css`
   body {
-    background: #f3f3f3;
+    background: ${theme.surface.background};
+    color: ${theme.text.normal};
+    font-family: ${theme.fonts.body.family};
+    font-weight: ${theme.fonts.body.weight};
+    font-size: ${theme.fonts.body.size};
+    line-height: ${theme.fonts.body.height};
+  }
+
+  strong {
+    font-weight: ${theme.fonts.emphasis.weight};
   }
 
   input, button, a {
     :focus-visible {
-      outline-color: #feac13;
-      outline-width: 2px;
-      outline-style: solid;
+      outline: ${theme.border.focusVisible};
     }
   }
-`;
+`);
 
 export type AppLayoutProps = {
   children?: ReactNode;

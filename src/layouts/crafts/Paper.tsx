@@ -1,8 +1,7 @@
-import styled from "styled-components";
-import { theme } from "../theme";
+import { css } from "styled-components";
 
-export const Paper = styled.section`
+export const paperStyle = css(({theme}) => css`
   background: white;
   padding: 1rem;
-  box-shadow: ${theme.elevation1};
-`;
+  box-shadow: ${theme.elevations.elevation1};
+`);

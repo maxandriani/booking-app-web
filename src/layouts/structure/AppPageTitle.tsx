@@ -1,18 +1,18 @@
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 
 export type AppPageTitleProps = {
   className?: string;
 }
 
-const AppPageTitle = styled.h1`
-  color: #cc2b5e;
-  color: linear-gradient(115deg, #753a88, #cc2b5e);
+const AppPageTitle = styled.h1(({theme}) => css`
+  color: ${theme.text.title};
   padding: 0;
   margin: 0;
+  font-family: ${theme.fonts.heading.family};
   font-weight: 300;
   font-size: 2rem;
   min-height: 3rem;
-`;
+`);
 
 AppPageTitle.displayName = 'AppPageTitle'
 export default AppPageTitle;
