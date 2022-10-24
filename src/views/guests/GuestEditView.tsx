@@ -1,7 +1,7 @@
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
 import { MdArrowBack } from "react-icons/md";
-import { useNavigate, useParams, useSearchParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { queryClient } from "../..";
 import { Title } from "../../layouts/crafts/Text";
 import { List } from "../../layouts/lists/Lists";
@@ -16,7 +16,7 @@ import AppLayout from "../../layouts/structure/AppLayout";
 import AppMainBar from "../../layouts/structure/AppMainBar";
 import AppPageTitle from "../../layouts/structure/AppPageTitle";
 import GuestContactItem from './partials/GuestContactItem';
-import { createGuestContact, ICreateUpdateGuestContactBody, IGuestContactResponse, toContactType } from "../../services/guest-contact-api";
+import { createGuestContact, ICreateUpdateGuestContactBody, IGuestContactResponse } from "../../services/guest-contact-api";
 import { getGuestByKey, IGuestWithContactsResponse, IUpdateGuestBody, updateGuest } from "../../services/guest-api";
 import GuestContactForm from "../../components/guest-contacts/GuestContactForm";
 
@@ -28,13 +28,12 @@ interface AlertInfo {
 export default function PlaceEditView() {
   const navigate = useNavigate();
   const { guestId } = useParams();
-  const [searchParams] = useSearchParams();
   const [alert, setAlert] = useState<AlertInfo|undefined>();
   if (!guestId) throw new Error('Required parameter placeId');
-  const { data: guest, refetch } = useQuery(['guest', guestId], () => getGuestByKey(guestId), { suspense: true });
+  const { data: guest } = useQuery(['guest', guestId], () => getGuestByKey(guestId), { suspense: true });
   const [editMode, setEditMode] = useState(false);
   
-  const { mutate, isError, isLoading, isSuccess, error } = useMutation<IGuestWithContactsResponse, Error, IUpdateGuestBody>(
+  const { mutate, isError, isLoading, error } = useMutation<IGuestWithContactsResponse, Error, IUpdateGuestBody>(
     guest => updateGuest(guestId, guest),
     {
       onSuccess: (data) => {

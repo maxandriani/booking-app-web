@@ -54,7 +54,7 @@ function NewGuestForm({ loading, guest, onSave }: GuestFormProps) {
   useEffect(() => {
     if (contactFields.length === 0)
       resetContactField();
-  }, [contactFields, resetContactField])
+  }, [contactFields])
 
   return (
     <FormCard onSubmit={handleSave} autoComplete="off">

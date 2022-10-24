@@ -2,7 +2,6 @@ import { useQuery } from "@tanstack/react-query";
 import React, { useState } from "react";
 import { MdAddCircleOutline, MdDeleteForever, MdOutlineFilterList, MdOutlineSearch, MdOutlineSort } from 'react-icons/md';
 import { useNavigate } from "react-router-dom";
-import { PlaceCard } from "../../components/places/PlaceCard";
 import PlaceCardList from "../../components/places/PlaceCardList";
 import { Button, IconButton } from "../../layouts/buttons/Button";
 import Alert from "../../layouts/communications/Alerts";

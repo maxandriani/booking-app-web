@@ -9,15 +9,12 @@ const ContactListItem = styled(ListItem)`
   gap: 0.5rem;
 `;
 
-const ContactInfo = styled.div`
-  display: flex;
-  gap: 0.5rem;
-`;
 const ContactTypeLabel = styled(Label)`
   flex: 1 0;
   max-width: 30%;
   min-width: 80px;
 `;
+
 const ContactValueLabel = styled(Label)`
   flex: 1;
 `;
