@@ -1,13 +1,18 @@
 import React from 'react';
 import styled, { css } from 'styled-components';
 import { BusyAnimation } from '../animations/busy-animation';
-import { theme } from '../theme';
+
+function isLoading(loading?: boolean) {
+  if (loading === true) return css`
+    animation: ${BusyAnimation} 1s infinite;
+  `;
+}
 
 export type ButtonProps = {
   loading?: boolean;
 } & React.HTMLProps<HTMLButtonElement>;
 
-export const ButtonBase = styled.button<ButtonProps>`
+export const ButtonBase = styled.button<ButtonProps>(({ theme, loading }) => css`
   flex: 0 0;
   display: flex;
   align-items: center;
@@ -16,19 +21,21 @@ export const ButtonBase = styled.button<ButtonProps>`
   flex-direction: row;
   justify-content: center;
   font-size: 1.4rem;
-  border: 1px solid #cc2b5e;
-  border-radius: ${theme.radiusMedium};
+  border: none;
+  border-radius: ${theme.border.radius.medium};
   font-size: 1rem;
   padding: 0.6rem 1rem;
   margin: 0;
   gap: 0.5rem;
   cursor: pointer;
   box-sizing: border-box;
-  transition: all .3s cubic-bezier(.05, .03, .35, 1);
+  transition: all ${theme.transitions.calm};
   user-select: none;
   touch-action: manipulation;
   min-width: fit-content;
   opacity: 1;
+  color: ${theme.text.interactive};
+  background: transparent;
 
   > * {
     flex: 1 0;
@@ -43,56 +50,58 @@ export const ButtonBase = styled.button<ButtonProps>`
   }
 
   :hover {
-    //opacity: .9;
+    color: ${theme.text.highlight};
   }
 
   :focus-visible {
-    outline-color: #feac13;
-    outline-width: 2px;
-    outline-style: solid;
+    outline-color: ${theme.border.focusVisible};
   }
 
   :disabled {
     cursor: auto;
-    color: #ababab;
-    background: transparent;
+    color: ${theme.text.muted};
   }
-
-  ${({ loading }) => loading ? css`animation: ${BusyAnimation} 1s infinite;` : ``}
-`;
-export const Button = styled(ButtonBase)`
-  box-shadow: ${theme.elevation1};
-  background: linear-gradient(115deg, #753a88, #cc2b5e);
-  color: white;
+  ${isLoading(loading)}
+`);
+export const Button = styled(ButtonBase)(({theme}) => css`
+  color: ${theme.button.default.color};
+  border: ${theme.button.default.border};
+  background: ${theme.button.default.background};
+  box-shadow: ${theme.elevations.elevation1};
 
   :hover {
-    box-shadow: ${theme.elevation2};
-    background:
-      linear-gradient(115deg, #feac1318, #feac1336),
-      linear-gradient(115deg, #753a88, #cc2b5e);
+    color: ${theme.button.hover.color};
+    border: ${theme.button.hover.border};
+    background: ${theme.button.hover.background};
+    box-shadow: ${theme.elevations.elevation2};
   }
 
   :active {
-    background:
-      linear-gradient(115deg, #feac1328, #feac1346),
-      linear-gradient(115deg, #753a88, #cc2b5e);
+    color: ${theme.button.active.color};
+    border: ${theme.button.active.border};
+    background: ${theme.button.active.background};
+    box-shadow: ${theme.elevations.elevation2};
   }
 
   :disabled {
     cursor: auto;
-    color: #ababab;
-    background: transparent;
+    color: ${theme.button.disabled.color};
+    border: ${theme.button.disabled.border};
+    background: ${theme.button.disabled.background};
+    box-shadow: none;
   }
-`;
-export const IconButton = styled(ButtonBase)`
+`);
+export const IconButton = styled(ButtonBase)(({theme}) => css`
   border-radius: 50%;
   min-width: 2.5rem;
   min-height: 2.5rem;
   padding: 0.5rem;
   margin: 0;
-  border: none;
-  background: transparent;
-  color: #753a88;
+
+  color: ${theme.iconButton.default.color};
+  border: ${theme.iconButton.default.border};
+  background: ${theme.iconButton.default.background};
+  box-shadow: none;
 
   > svg {
     flex: 1 1;
@@ -102,18 +111,24 @@ export const IconButton = styled(ButtonBase)`
   }
 
   :hover {
-    color: #cc2b5e;
-    background: #00000019;
+    color: ${theme.iconButton.hover.color};
+    border: ${theme.iconButton.hover.border};
+    background: ${theme.iconButton.hover.background};
+    box-shadow: none;
   }
 
   :active {
-    background: #cc2b5e19;
+    color: ${theme.iconButton.active.color};
+    border: ${theme.iconButton.active.border};
+    background: ${theme.iconButton.active.background};
+    box-shadow: none;
   }
 
   :disabled {
     cursor: auto;
-    color: #ababab;
-    background: transparent;
+    color: ${theme.iconButton.disabled.color};
+    border: ${theme.iconButton.disabled.border};
+    background: ${theme.iconButton.disabled.background};
+    box-shadow: none;
   }
-`;
-export const SubmitButton = styled(ButtonBase)``;
+`);

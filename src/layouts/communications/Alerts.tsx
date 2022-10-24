@@ -2,15 +2,60 @@ import { useEffect } from 'react';
 import { MdDeleteForever } from 'react-icons/md';
 import styled, { css } from 'styled-components';
 import { IconButton } from '../buttons/Button';
-import { Paper } from '../crafts/Paper';
+import { paperStyle } from '../crafts/Paper';
 import { Text } from '../crafts/Text';
-import { theme } from '../theme';
 
 type AlertPaperProps = {
   level?: 'success' | 'error' | 'info' | 'warning';
 }
 
-const AlertPaper = styled(Paper)<AlertPaperProps>`
+function alertLevel(level?: 'success' | 'error' | 'info' | 'warning') {
+  switch (level) {
+    case 'error': return css(({ theme }) => `
+      color: ${theme.alert.negative.text};
+      background: ${theme.alert.negative.surface};
+      border: ${theme.alert.negative.border};
+
+      ${Text} {
+        color: ${theme.alert.negative.text};
+      }
+
+      ${IconButton} {
+        color: ${theme.alert.negative.text};
+      }
+    `);
+    case 'warning': return css(({theme}) => `
+      color: ${theme.alert.warning.text};
+      background: ${theme.alert.warning.surface};
+      border: ${theme.alert.warning.border};
+
+      ${Text} {
+        color: ${theme.alert.warning.text};
+      }
+
+      ${IconButton} {
+        color: ${theme.alert.warning.text};
+      }
+    `);
+    case 'success': return css(({theme}) => `
+      color: ${theme.alert.success.text};
+      background: ${theme.alert.success.surface};
+      border: ${theme.alert.success.border};
+
+      ${Text} {
+        color: ${theme.alert.success.text};
+      }
+
+      ${IconButton} {
+        color: ${theme.alert.success.text};
+      }
+    `);
+    default: return;
+  }
+}
+
+const AlertPaper = styled.section<AlertPaperProps>(({ theme, level }) => css`
+  ${paperStyle}
   display: flex;
   flex-direction: row;
   flex-wrap: nowrap;
@@ -19,51 +64,31 @@ const AlertPaper = styled(Paper)<AlertPaperProps>`
   justify-content: space-between;
   gap: 0.5rem;
   padding: 0;
-  box-shadow: ${theme.elevation2};
-  //border-radius: ${theme.radiusLarge};
+  box-shadow: ${theme.elevations.elevation2};
 
-  color: white;
-  background: linear-gradient(145deg, #30a5db, #5d76dc);
+  color: ${theme.alert.info.text};
+  background: ${theme.alert.info.surface};
+  border: ${theme.alert.info.border};
+
+  ${IconButton} {
+    color: ${theme.alert.info.text};
+  }
 
   ${Text} {
     padding: 0.5rem 1.5rem;
     margin: 0;
     font-weight: 500;
-    color: white;
-    text-shadow: ${theme.elevation1};
+    color: ${theme.alert.info.text};
+    text-shadow: ${theme.elevations.elevation1};
   }
 
   ${IconButton} {
     margin: 0;
+    color: ${theme.alert.info.text};
   }
 
-  ${({ level }) => {
-    switch (level) {
-      case 'error': return css`
-        background: linear-gradient(145deg, #f00b51, #b0067d);
-
-        ${IconButton} {
-          color: white;
-        }
-      `
-      case 'warning': return css`
-        background: linear-gradient(145deg, #ffab1b, #e77613);
-
-        ${IconButton} {
-          color: white;
-        }
-      `;
-      case 'success': return css`
-        background: linear-gradient(145deg, #18cb7d, #19aa88);
-
-        ${IconButton} {
-          color: white;
-        }
-      `;
-      default: return '';
-    }
-  }}
-`;
+  ${alertLevel(level)}
+`);
 
 export type AlertProps = {
   className?: string;
@@ -72,7 +97,7 @@ export type AlertProps = {
   onClose?: () => void;
 } & AlertPaperProps;
 
-function Alert({ message, timeout, level = 'success', onClose }: AlertProps) {
+function Alert({ message, timeout, level = 'info', onClose }: AlertProps) {
   
   useEffect(() => {
     let st: NodeJS.Timeout | undefined = undefined;

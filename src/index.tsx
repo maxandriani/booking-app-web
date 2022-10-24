@@ -9,6 +9,12 @@ import PlaceIndexView from './views/places/PlaceIndexView';
 import PlaceEditView from './views/places/PlaceEditView';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import NewPlaceView from './views/places/NewPlaceView';
+import { ThemeProvider } from 'styled-components';
+import { defaultTheme } from './layouts/defaultTheme';
+import Alert from './layouts/communications/Alerts';
+import GuestIndexView from './views/guests/GuestIndexView';
+import NewGuestView from './views/guests/NewGuestView';
+import GuestEditView from './views/guests/GuestEditView';
 
 const router = createBrowserRouter([
   {
@@ -27,6 +33,18 @@ const router = createBrowserRouter([
   {
     path: 'places/:placeId',
     element: <PlaceEditView />
+  },
+  {
+    path: 'guests',
+    element: <GuestIndexView />
+  },
+  {
+    path: 'guests/new',
+    element: <NewGuestView />
+  },
+  {
+    path: 'guests/:guestId',
+    element: <GuestEditView />
   }
 ]);
 
@@ -38,11 +56,13 @@ const root = ReactDOM.createRoot(
 
 root.render(
   <React.StrictMode>
-    <QueryClientProvider client={queryClient}>
-      <Suspense fallback={<><p>Carregando...</p></>}>
-        <RouterProvider router={router} />
-      </Suspense>
-    </QueryClientProvider>
+    <ThemeProvider theme={defaultTheme}>
+      <QueryClientProvider client={queryClient}>
+        <Suspense fallback={<Alert message="Carregando..." />}>
+          <RouterProvider router={router} />
+        </Suspense>
+      </QueryClientProvider>
+    </ThemeProvider>
   </React.StrictMode>
 );
 

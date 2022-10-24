@@ -1,3 +1,4 @@
+import { collectionRequest, createRequest, deleteRequest, getRequest, updateRequest } from "../commons/services/fetch-utils";
 import { env } from "../env";
 
 /**
@@ -43,20 +44,7 @@ export interface ICreateUpdatePlaceBody {
  * @returns 
  */
 export async function getPlacesCollection(query?: IGetPlacesQuery, signal?: AbortSignal): Promise<ICollectionResponse<IPlaceResponse>> {
-  let queryStr = '';
-  
-  if (query !== undefined) {
-    var queryParser = new URLSearchParams();
-    for (const [k, v] of Object.entries(query))
-      queryParser.append(k, v.toString());
-    queryStr = `?${queryParser.toString()}`;
-  }
-  
-  return fetch(`${env.REACT_APP_API_HOST}/api/v1/places${queryStr}`, { signal })
-    .then(async res => ({
-      items: await res.json(),
-      count: parseInt(res.headers.get('x-total-count') ?? '0')
-    }));
+  return collectionRequest(`${env.REACT_APP_API_HOST}/api/v1/places`, query, signal);
 }
 
 /**
@@ -66,16 +54,14 @@ export async function getPlacesCollection(query?: IGetPlacesQuery, signal?: Abor
  * @returns 
  */
 export async function getPlaceByKey(id: string, signal?: AbortSignal): Promise<IPlaceResponse> {
-  return fetch(`${env.REACT_APP_API_HOST}/api/v1/places/${id}`, { signal })
-    .then(res => res.json());
+  return getRequest(`${env.REACT_APP_API_HOST}/api/v1/places/${id}`, signal);
 }
 
 /**
  * Create a new place
  */
 export async function createPlace(place: ICreateUpdatePlaceBody, signal?: AbortSignal): Promise<IPlaceResponse> {
-  return fetch(`${env.REACT_APP_API_HOST}/api/v1/places`, { signal, body: JSON.stringify(place), method: 'post', headers: { 'Content-Type': 'application/json' } })
-    .then(res => res.json());
+  return createRequest(`${env.REACT_APP_API_HOST}/api/v1/places`, JSON.stringify(place), signal);
 }
 
 /**
@@ -86,8 +72,7 @@ export async function createPlace(place: ICreateUpdatePlaceBody, signal?: AbortS
  * @returns 
  */
 export async function updatePlace(id: string, body: ICreateUpdatePlaceBody, signal?: AbortSignal): Promise<IPlaceResponse> {
-  return fetch(`${env.REACT_APP_API_HOST}/api/v1/places/${id}`, { signal, body: JSON.stringify(body), method: 'put', headers: { 'Content-Type': 'application/json' } })
-    .then(res => res.json());
+  return updateRequest(`${env.REACT_APP_API_HOST}/api/v1/places/${id}`, JSON.stringify(body), signal);
 }
 
 /**
@@ -97,6 +82,5 @@ export async function updatePlace(id: string, body: ICreateUpdatePlaceBody, sign
  * @returns 
  */
 export async function deletePlace(id: string, signal?: AbortSignal): Promise<void> {
-  return fetch(`${env.REACT_APP_API_HOST}/api/v1/places/${id}`, { signal, method: 'delete' })
-    .then(() => undefined);
+  return deleteRequest(`${env.REACT_APP_API_HOST}/api/v1/places/${id}`, signal);
 }

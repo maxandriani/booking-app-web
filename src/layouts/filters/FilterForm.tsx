@@ -1,11 +1,19 @@
-import styled from "styled-components";
-import { theme } from "../theme";
+import styled, { css } from "styled-components";
+import { paperStyle } from "../crafts/Paper";
+import { InputBase } from "../inputs/Inputs";
 
-export const FilterForm = styled.form`
+export const FilterForm = styled.form(({ theme }) => {
+  return css`
+  ${paperStyle}
+  flex: 1;
   display: flex;
   gap: 0.5rem;
   padding: 0.5rem;
-  background: ${theme.paperBg};
-  box-shadow:  ${theme.elevation2};
-  border-radius: ${theme.radiusSmall};
+  box-shadow:  ${theme.elevations.elevation2};
+  border-radius: ${theme.border.radius.small};
+
+  ${InputBase} {
+    flex: 1;
+  }
 `;
+});

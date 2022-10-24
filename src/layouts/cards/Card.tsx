@@ -1,27 +1,28 @@
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 import { Button } from "../buttons/Button";
-import { Paper } from "../crafts/Paper";
-import { Title } from "../crafts/Text";
-import { theme } from "../theme";
+import { paperStyle } from "../crafts/Paper";
+import { titleStyle, labelStyle } from "../crafts/Text";
 
-export const CardTitle = styled(Title)`
+export const CardTitle = styled.h1`
+  ${titleStyle}
   padding: 0;
   margin: 0;
 `;
 
 export const CardDescription = styled.span`
+  ${labelStyle}
   padding: 0;
   margin: 0;
   font-size: 0.9rem;
 `;
 
-export const Card = styled(Paper)`
+export const Card = styled.section(({ theme }) => css`
+  ${paperStyle}
   display: flex;
   flex-direction: column;
-  border-radius: ${theme.radiusMinimal};
+  border-radius: ${theme.border.radius.minimal};
   padding: 0;
-
-`;
+`);
 export const CardHeader = styled.header`
     display: grid;
     grid-template:
@@ -42,7 +43,7 @@ export const CardHeader = styled.header`
   }
 `;
 export const CardContent = styled.div``;
-export const CardActions = styled.div`
+export const CardActions = styled.div(({theme}) => css`
   border-top: 1px solid #f3f3f3;
   display: flex;
 
@@ -50,30 +51,34 @@ export const CardActions = styled.div`
     background: transparent;
     border: none;
     box-shadow: none;
-    color: #753a88;
+    color: ${theme.text.interactive};
     border-radius: 0;
 
     :first-child {
-      border-bottom-left-radius: ${theme.radiusMinimal};
+      border-bottom-left-radius: ${theme.border.radius.minimal};
     }
 
     :last-child {
-      border-bottom-right-radius: ${theme.radiusMinimal};
+      border-bottom-right-radius: ${theme.border.radius.minimal};
     }
 
     :hover {
-      color: #cc2b5e;
-      background: #00000019;
+      color: ${theme.text.interactiveActive};
+      background: ${theme.surface.hover};
+      border: none;
     }
 
     :active {
-      background: #cc2b5e19;
+      color: ${theme.text.interactiveActive};
+      background: ${theme.surface.active};
+      border: none;
     }
 
     :disabled {
       cursor: auto;
-      color: #ababab;
+      color: ${theme.text.muted};
       background: transparent;
+      border: none;
     }
   }
-`;
+`);

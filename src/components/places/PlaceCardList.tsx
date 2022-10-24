@@ -1,42 +1,26 @@
 import { ReactNode } from 'react';
-import styled from 'styled-components';
-import { theme } from '../../layouts/theme';
+import { CardList, CardListItem } from '../../layouts/lists/Lists';
 import { IPlaceResponse } from '../../services/places-api';
-
-const PlaceCardListPaper = styled.ul`
-  list-style: none;
-  margin: 0;
-  padding: 0;
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-  gap: 1rem;
-`;
-const PlaceCardListItem = styled.li`
-  flex: 1 0;
-
-  :hover {
-    box-shadow: ${theme.elevation2};
-  }
-`;
+import { PlaceCard } from './PlaceCard';
 
 export type PlaceCardListProps = {
   className?: string;
   places: Array<IPlaceResponse>;
-  placeItem: (place: IPlaceResponse) => ReactNode
+  placeActions?: (place: IPlaceResponse) => ReactNode
 }
 
 function PlaceCardList({
   places,
-  placeItem,
+  placeActions,
   ...props
 }: PlaceCardListProps) {
   return (
-    <PlaceCardListPaper {...props}>
+    <CardList {...props}>
       {places.map(place =>
-        <PlaceCardListItem key={place.id}>
-          {placeItem(place)}
-        </PlaceCardListItem>)}
-    </PlaceCardListPaper>
+        <CardListItem key={place.id}>
+          <PlaceCard place={place} actions={placeActions?.call(null, place)} />
+        </CardListItem>)}
+    </CardList>
   );
 }
 
