@@ -12,6 +12,9 @@ import NewPlaceView from './views/places/NewPlaceView';
 import { ThemeProvider } from 'styled-components';
 import { defaultTheme } from './layouts/defaultTheme';
 import Alert from './layouts/communications/Alerts';
+import GuestIndexView from './views/guests/GuestIndexView';
+import NewGuestView from './views/guests/NewGuestView';
+import GuestEditView from './views/guests/GuestEditView';
 
 const router = createBrowserRouter([
   {
@@ -30,6 +33,18 @@ const router = createBrowserRouter([
   {
     path: 'places/:placeId',
     element: <PlaceEditView />
+  },
+  {
+    path: 'guests',
+    element: <GuestIndexView />
+  },
+  {
+    path: 'guests/new',
+    element: <NewGuestView />
+  },
+  {
+    path: 'guests/:guestId',
+    element: <GuestEditView />
   }
 ]);
 

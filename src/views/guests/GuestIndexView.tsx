@@ -1,9 +1,8 @@
 import { useQuery } from "@tanstack/react-query";
-import React, { useState } from "react";
-import { MdAddCircleOutline, MdDeleteForever, MdOutlineFilterList, MdOutlineSearch, MdOutlineSort } from 'react-icons/md';
+import { useState } from "react";
+import { MdAddCircleOutline, MdDeleteForever, MdOutlineFilterList, MdOutlineSearch, MdOutlineSort } from "react-icons/md";
 import { useNavigate } from "react-router-dom";
-import { PlaceCard } from "../../components/places/PlaceCard";
-import PlaceCardList from "../../components/places/PlaceCardList";
+import GuestCardList from "../../components/guests/GuestCardList";
 import { Button, IconButton } from "../../layouts/buttons/Button";
 import Alert from "../../layouts/communications/Alerts";
 import { VerticalDivider } from "../../layouts/crafts/Divider";
@@ -15,21 +14,22 @@ import AppHeader from "../../layouts/structure/AppHeader";
 import AppLayout from "../../layouts/structure/AppLayout";
 import AppMainBar from "../../layouts/structure/AppMainBar";
 import AppPageTitle from "../../layouts/structure/AppPageTitle";
-import { deletePlace, getPlacesCollection, IGetPlacesQuery, IPlaceResponse } from "../../services/places-api";
+import { deleteGuest, getGestCollection, IGuestWithContactsResponse, ISearchGuestQuery } from "../../services/guest-api";
 
-type PlaceCardActionsProps = {
-  place: IPlaceResponse;
+
+type GuestCardActionsProps = {
+  guest: IGuestWithContactsResponse;
   onDeleted: () => {};
 }
 
-function PlaceCardActions({ place, onDeleted }: PlaceCardActionsProps) {
+function GuestCardActions({ guest, onDeleted }: GuestCardActionsProps) {
   const navigate = useNavigate();
   const [isDeleting, setIsDeleting] = useState(false);
 
   async function doDelete() {
     setIsDeleting(true);
     try {
-      await deletePlace(place.id);
+      await deleteGuest(guest.id);
       setIsDeleting(false);
       onDeleted();
     } catch (error) {
@@ -40,7 +40,7 @@ function PlaceCardActions({ place, onDeleted }: PlaceCardActionsProps) {
 
   return (
     <>
-      <Button onClick={() => navigate(`/places/${place.id}`)}>
+      <Button onClick={() => navigate(`/guests/${guest.id}`)}>
         <span>Visualizar</span>
       </Button>
       <IconButton disabled={isDeleting ? true : undefined} loading={isDeleting ? true : undefined} onClick={doDelete}>
@@ -50,9 +50,9 @@ function PlaceCardActions({ place, onDeleted }: PlaceCardActionsProps) {
   )
 }
 
-export default function PlaceIndexView() {
-  const [filters, setFilters] = useState<IGetPlacesQuery | undefined>(undefined);
-  const { data, error, isSuccess, isError, isFetching, refetch } = useQuery(['places', filters], ({ queryKey: [_, filters] }) => getPlacesCollection(filters as IGetPlacesQuery));
+export default function GuestIndexView() {
+  const [filters, setFilters] = useState<ISearchGuestQuery | undefined>({ withContacts: true });
+  const { data, error, isSuccess, isError, isFetching, refetch } = useQuery(['guests', filters], ({ queryKey: [_, filters] }) => getGestCollection(filters as ISearchGuestQuery));
   const navigate = useNavigate();
 
   function doSearch(e: React.FormEvent<HTMLFormElement>) {
@@ -72,16 +72,16 @@ export default function PlaceIndexView() {
     <AppLayout>
       <AppMainBar />
       <AppHeader>
-        <AppPageTitle>Locais</AppPageTitle>
+        <AppPageTitle>Hóspedes</AppPageTitle>
       </AppHeader>
       <AppContent>
         <AppActionBar>
-          <IconButton onClick={() => navigate('/places/new')}>
+          <IconButton onClick={() => navigate('/guests/new')}>
             <MdAddCircleOutline />
           </IconButton>
 
           <FilterForm onSubmit={doSearch} autoComplete="off">
-            <InputBase name="search" placeholder="Pesquisar locais" />
+            <InputBase name="search" placeholder="Pesquisar hóspedes" />
             <IconButton type="submit">
               <MdOutlineSearch />
             </IconButton>
@@ -97,9 +97,10 @@ export default function PlaceIndexView() {
 
         {isError && <Alert level="error" message={(error as Error).message} timeout={9} />}
         {isFetching && <Alert level="info" message="Carregando dados..." />}
-        {isSuccess && <PlaceCardList
-          places={data?.items}
-          placeActions={place => <PlaceCardActions place={place} onDeleted={refetch} />} />}
+        {isSuccess && <GuestCardList
+          showContactList={false}
+          guests={data?.items}
+          guestActions={guest => <GuestCardActions guest={guest} onDeleted={refetch} />} />}
       </AppContent>
     </AppLayout>
   )

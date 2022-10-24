@@ -15,7 +15,7 @@ const GlobalStyles = createGlobalStyle(({theme}) => css`
     font-weight: ${theme.fonts.emphasis.weight};
   }
 
-  input, button, a {
+  input, button, a, select, textarea {
     :focus-visible {
       outline: ${theme.border.focusVisible};
     }

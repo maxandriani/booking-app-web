@@ -1,4 +1,4 @@
-import { MdHomeFilled, MdLocationOn } from "react-icons/md";
+import { MdContactPage, MdHomeFilled, MdLocationOn } from "react-icons/md";
 import { useLocation, useNavigate } from 'react-router-dom';
 import styled, { css } from 'styled-components';
 
@@ -89,6 +89,10 @@ function AppMainBar({...props}: AppMainBarProps) {
       <NavItem onClick={() => navigate('/')} current={isCurrent('/')}>
         <NavItemIcon><MdHomeFilled /></NavItemIcon>
         <NavItemDescription>Painel</NavItemDescription>
+      </NavItem>
+      <NavItem onClick={() => navigate('/guests')} current={isCurrent('/guests')}>
+        <NavItemIcon><MdContactPage /></NavItemIcon>
+        <NavItemDescription>Hóspedes</NavItemDescription>
       </NavItem>
       <NavItem onClick={() => navigate('/places')} current={isCurrent('/places')}>
         <NavItemIcon><MdLocationOn /></NavItemIcon>

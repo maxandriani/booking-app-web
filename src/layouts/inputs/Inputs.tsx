@@ -19,6 +19,34 @@ export const Input = styled(InputBase)(({theme}) => css`
   }
 `);
 
+export const TextArea = styled.textarea(({theme}) => css`
+  background: ${theme.surface.input};
+  border-radius: ${theme.border.radius.medium};
+  border: none;
+  padding: 0.2rem 0.8rem;
+  margin: 0;
+  font-size: 1rem;
+  min-height: 4rem;
+`)
+
+export const Select = styled.select(({theme}) => css`
+  background: ${theme.surface.input};
+  border-radius: ${theme.border.radius.medium};
+  box-sizing: content-box;
+  border: none;
+  padding: 0.2rem 0.8rem;
+  margin: 0;
+  font-size: 1rem;
+`);
+
+export const Option = styled.option`
+  padding: 0.2rem 0.8rem;
+`;
+
+export const InputGroup = styled.div`
+  display: flex;
+`;
+
 export const FormField = styled.label(({theme}) => css`
   display: flex;
   flex-direction: column;

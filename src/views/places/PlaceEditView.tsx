@@ -1,10 +1,10 @@
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
 import { MdArrowBack } from 'react-icons/md';
-import { useNavigate, useParams, useSearchParams } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { queryClient } from "../..";
-import PlaceForm from "../../components/places/PlaceForm";
 import { IconButton } from "../../layouts/buttons/Button";
+import PlaceForm from "../../components/places/PlaceForm";
 import Alert from "../../layouts/communications/Alerts";
 import AppContent from "../../layouts/structure/AppContent";
 import AppHeader from "../../layouts/structure/AppHeader";
@@ -13,30 +13,46 @@ import AppMainBar from "../../layouts/structure/AppMainBar";
 import AppPageTitle from "../../layouts/structure/AppPageTitle";
 import { getPlaceByKey, ICreateUpdatePlaceBody, IPlaceResponse, updatePlace } from "../../services/places-api";
 
+interface AlertInfo {
+  level: 'info' | 'error',
+  message: string
+}
+
 export default function PlaceEditView() {
   const navigate = useNavigate();
   const { placeId } = useParams();
-  const [searchParams] = useSearchParams();
+  const location = useLocation();
+  const [alert, setAlert] = useState<AlertInfo|undefined>();
   if (!placeId) throw new Error('Required parameter placeId');
   const { data: place } = useQuery(['place', placeId], () => getPlaceByKey(placeId), { suspense: true });
-  const { mutate, isError, isLoading, isSuccess, error } = useMutation<IPlaceResponse, Error, ICreateUpdatePlaceBody>(
+  const { mutate, isError, isLoading, error } = useMutation<IPlaceResponse, Error, ICreateUpdatePlaceBody>(
     place => updatePlace(placeId, place),
     {
-      onSuccess: (data) => queryClient.setQueriesData(['place', data.id], data)
+      onSuccess: (data) => {
+        queryClient.setQueriesData(['place', data.id], data);
+        setAlert({ level: 'info', message: 'Registros salvos com sucesso!' });
+      }
     });
   
-  const [showAlert, setShowAlert] = useState(isError || isSuccess || searchParams.has('success'));
-
   function getErrorMessage(error: unknown) {
     if (error instanceof Error) return error.message;
     return JSON.stringify(error);
   }
 
   useEffect(() => {
-    if (isError || isSuccess) {
-      setShowAlert(true);
+    if (!!location.state?.message) {
+      setAlert({
+        level: 'info',
+        message: location.state?.message
+      });
     }
-  }, [isError, isSuccess]);
+  }, [location.state, setAlert]);
+
+  useEffect(() => {
+    if (isError) {
+      setAlert({ level: 'error', message: getErrorMessage(error) });
+    }
+  }, [isError, error, setAlert]);
 
   return (
     <AppLayout>
@@ -48,8 +64,7 @@ export default function PlaceEditView() {
         <AppPageTitle>{place?.name}</AppPageTitle>
       </AppHeader>
       <AppContent>
-      {isError && showAlert && <Alert level="error" message={getErrorMessage(error)} onClose={() => setShowAlert(false)} />}
-        {(isSuccess || searchParams.has('success')) && showAlert && <Alert level="success" message="Registro salvo com sucesso." onClose={() => setShowAlert(false)} />}
+        {alert && <Alert level={alert?.level} message={alert?.message} onClose={() => setAlert(undefined)} />}
         <PlaceForm loading={isLoading} place={place} onSave={mutate} />
       </AppContent>
     </AppLayout>
