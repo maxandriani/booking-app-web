@@ -14,6 +14,7 @@ export const FilterForm = styled.form(({ theme }) => {
 
   ${InputBase} {
     flex: 1;
+    min-width: 120px;
   }
 `;
 });
