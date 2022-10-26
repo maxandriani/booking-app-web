@@ -63,7 +63,7 @@ export const ButtonBase = styled.button<ButtonProps>(({ theme, loading }) => css
   }
   ${isLoading(loading)}
 `);
-export const Button = styled(ButtonBase)(({theme}) => css`
+export const Button = styled(ButtonBase)<ButtonProps>(({theme}) => css`
   color: ${theme.button.default.color};
   border: ${theme.button.default.border};
   background: ${theme.button.default.background};
@@ -91,7 +91,7 @@ export const Button = styled(ButtonBase)(({theme}) => css`
     box-shadow: none;
   }
 `);
-export const IconButton = styled(ButtonBase)(({theme}) => css`
+export const IconButton = styled(ButtonBase)<ButtonProps>(({theme}) => css`
   border-radius: 50%;
   min-width: 2.5rem;
   min-height: 2.5rem;

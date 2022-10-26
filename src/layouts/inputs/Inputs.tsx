@@ -9,6 +9,9 @@ export const InputBase = styled.input(({theme}) => css`
   padding: 0.2rem 0.8rem;
   margin: 0;
   font-size: 1rem;
+  flex: 1;
+  width: 100%;
+  max-width: max-content;
 `);
 
 export const Input = styled(InputBase)(({theme}) => css`
@@ -27,6 +30,8 @@ export const TextArea = styled.textarea(({theme}) => css`
   margin: 0;
   font-size: 1rem;
   min-height: 4rem;
+  height: auto;
+  resize: vertical;
 `)
 
 export const Select = styled.select(({theme}) => css`
@@ -45,6 +50,7 @@ export const Option = styled.option`
 
 export const InputGroup = styled.div`
   display: flex;
+  gap: 0.5rem;
 `;
 
 export const FormField = styled.label(({theme}) => css`

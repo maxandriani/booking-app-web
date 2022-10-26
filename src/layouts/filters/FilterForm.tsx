@@ -13,7 +13,10 @@ export const FilterForm = styled.form(({ theme }) => {
   border-radius: ${theme.border.radius.small};
 
   ${InputBase} {
-    flex: 1;
+    flex: 1 1;
+    min-width: 80px;
+    width: 100%;
+    max-width: none;
   }
 `;
 });

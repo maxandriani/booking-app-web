@@ -36,7 +36,7 @@ spec:
     spec:
       containers:
       - name: booking-web
-        image: maxandriani/booking-app-web:0.0.0-rc2
+        image: maxandriani/booking-app-web:0.0.0-rc4
         imagePullPolicy: Always
         envFrom:
           - configMapRef:

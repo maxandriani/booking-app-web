@@ -14,7 +14,7 @@ import AppHeader from "../../layouts/structure/AppHeader";
 import AppLayout from "../../layouts/structure/AppLayout";
 import AppMainBar from "../../layouts/structure/AppMainBar";
 import AppPageTitle from "../../layouts/structure/AppPageTitle";
-import { deleteGuest, getGestCollection, IGuestWithContactsResponse, ISearchGuestQuery } from "../../services/guest-api";
+import { deleteGuest, getGuestCollection, IGuestWithContactsResponse, ISearchGuestQuery } from "../../services/guest-api";
 
 
 type GuestCardActionsProps = {
@@ -52,7 +52,7 @@ function GuestCardActions({ guest, onDeleted }: GuestCardActionsProps) {
 
 export default function GuestIndexView() {
   const [filters, setFilters] = useState<ISearchGuestQuery | undefined>({ withContacts: true });
-  const { data, error, isSuccess, isError, isFetching, refetch } = useQuery(['guests', filters], ({ queryKey: [_, filters] }) => getGestCollection(filters as ISearchGuestQuery));
+  const { data, error, isSuccess, isError, isFetching, refetch } = useQuery(['guests', filters], ({ queryKey: [_, filters] }) => getGuestCollection(filters as ISearchGuestQuery));
   const navigate = useNavigate();
 
   function doSearch(e: React.FormEvent<HTMLFormElement>) {
