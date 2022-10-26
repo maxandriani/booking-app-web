@@ -26,7 +26,7 @@ export interface IUpdateGuestBody {
   name: string;
 }
 
-export async function getGestCollection(query?: ISearchGuestQuery, signal?: AbortSignal): Promise<ICollectionResponse<IGuestWithContactsResponse>> {
+export async function getGuestCollection(query?: ISearchGuestQuery, signal?: AbortSignal): Promise<ICollectionResponse<IGuestWithContactsResponse>> {
   return collectionRequest(`${env.REACT_APP_API_HOST}/api/v1/guests`, query, signal);
 }
 

@@ -16,7 +16,7 @@ export default function NewPlaceView() {
   const navigate = useNavigate();
   const { mutate, isError, isLoading, isSuccess, error } = useMutation<IGuestWithContactsResponse, Error, ICreateGuestWithContactsBody>(
     place => createGuest(place),
-    { onSuccess: (data) => navigate(`/guests/${data.id}/?success=1`) });
+    { onSuccess: (data) => navigate(`/guests/${data.id}`, { state: { message: `Hóspede ${data.name} cadastrado com sucesso!` } }) });
   const [showAlert, setShowAlert] = useState(isError || isSuccess);
 
   function getErrorMessage(error: unknown) {

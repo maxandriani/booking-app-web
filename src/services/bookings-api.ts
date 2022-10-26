@@ -10,6 +10,15 @@ export enum BookingStatusEnum {
   Cancelled = 3
 }
 
+export function toBookingStatusEnum(value: BookingStatusEnum): string {
+  switch (value) {
+    case BookingStatusEnum.Pending: return 'Pendente';
+    case BookingStatusEnum.Confirmed: return 'Confirmado';
+    case BookingStatusEnum.Cancelled: return 'Cancelado';
+    default: return 'Desconhecido';
+  }
+}
+
 export interface ISearchBookingsQuery {
   byPlace?: string;
   date?: Date;
@@ -98,11 +107,13 @@ export function cancelBooking(id: string, signal?: AbortSignal): Promise<void> {
 
 export interface IBookingGuestBody {
   guestId: string;
-  isPrimary: boolean;
+  isPrimary?: boolean;
 }
 
 export function addBookingGuest(bookingId: string, guest: IBookingGuestBody, signal?: AbortSignal): Promise<void> {
-  return createRequest(`${env.REACT_APP_API_HOST}/api/v1/bookings/${bookingId}/guests`, JSON.stringify(guest), signal)
+  const headers = { 'Content-Type': 'application/json' };
+  return fetch(`${env.REACT_APP_API_HOST}/api/v1/bookings/${bookingId}/guests`, { signal, body: JSON.stringify(guest), headers, method: 'POST' })
+    .then(handleErrors)
     .then();
 }
 

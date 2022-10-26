@@ -15,6 +15,9 @@ import Alert from './layouts/communications/Alerts';
 import GuestIndexView from './views/guests/GuestIndexView';
 import NewGuestView from './views/guests/NewGuestView';
 import GuestEditView from './views/guests/GuestEditView';
+import BookingIndexView from './views/bookings/BookingIndexView';
+import NewBookingView from './views/bookings/NewBookingView';
+import BookingProfileView from './views/bookings/BookingProfileView';
 
 const router = createBrowserRouter([
   {
@@ -45,6 +48,18 @@ const router = createBrowserRouter([
   {
     path: 'guests/:guestId',
     element: <GuestEditView />
+  },
+  {
+    path: 'bookings',
+    element: <BookingIndexView />
+  },
+  {
+    path: 'bookings/new',
+    element: <NewBookingView />
+  },
+  {
+    path: 'bookings/:bookingId',
+    element: <BookingProfileView />
   }
 ]);
 

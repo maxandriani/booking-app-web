@@ -25,7 +25,8 @@ export function parseQueryString(query ?: any): string {
   if (query !== undefined) {
     var queryParser = new URLSearchParams();
     for (const [k, v] of Object.entries(query))
-      queryParser.append(k, v?.toString() ?? '');
+      if (v instanceof Date) queryParser.append(k, v?.toISOString() ?? '')
+      else queryParser.append(k, v?.toString() ?? '');
     queryStr = `?${queryParser.toString()}`;
   }
 
