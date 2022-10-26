@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { MdDeleteForever } from 'react-icons/md';
 import { coerceContactType, ICreateUpdateGuestContactBody } from '../../services/guest-contact-api';
-import { Button, IconButton } from '../../layouts/buttons/Button';
+import { Button, IconButton, ButtonBase } from '../../layouts/buttons/Button';
 import { Label } from '../../layouts/crafts/Text';
 import { FormCard, FormCardSection, FormCardActions, Input, FormField, InputGroup, Select, Option } from '../../layouts/inputs/Inputs';
 import { ICreateGuestWithContactsBody } from '../../services/guest-api';
@@ -11,9 +11,10 @@ export type GuestFormProps = {
   loading?: boolean;
   guest?: ICreateGuestWithContactsBody;
   onSave: (guest: ICreateGuestWithContactsBody) => void;
+  onCancel?: () => void;
 }
 
-function NewGuestForm({ loading, guest, onSave }: GuestFormProps) {
+function NewGuestForm({ loading, guest, onSave, onCancel }: GuestFormProps) {
   const [contactFields, setContactFields] = useState<Array<ICreateUpdateGuestContactBody>>(guest?.contacts ?? [{ type: GuestContactTypeEnum.Phone, value: '' }]);
 
   function handleSave(event: React.FormEvent<HTMLFormElement>) {
@@ -23,10 +24,12 @@ function NewGuestForm({ loading, guest, onSave }: GuestFormProps) {
     const name = data.get('name')?.toString() ?? '';
     const types = data.getAll('contacts.type');
     const values = data.getAll('contacts.value');
-    const contacts = contactFields.map((_, idx) => ({
-      type: coerceContactType(types[idx]?.toString() ?? ''),
-      value: values[idx]?.toString() ?? ''
-    }));
+    const contacts = contactFields
+      .map((_, idx) => ({
+        type: coerceContactType(types[idx]?.toString() ?? ''),
+        value: values[idx]?.toString() ?? ''
+      }))
+      .filter(({ type, value }) => !!type && !!value);
 
     onSave({ name, contacts });
     event.target.dispatchEvent(new Event('reset'));
@@ -80,12 +83,13 @@ function NewGuestForm({ loading, guest, onSave }: GuestFormProps) {
               </IconButton>
             </InputGroup>
           </FormField>)}
-        <Button type="button" onClick={() => addContactField()}>
+        <ButtonBase type="button" onClick={() => addContactField()}>
           <span>Adicionar Contato</span>
-        </Button>
+        </ButtonBase>
       </FormCardSection>
       <FormCardActions>
         <Button type="submit" loading={coerce(loading)}>Salvar</Button>
+        {!!onCancel && <ButtonBase type="button" onClick={onCancel} loading={coerce(loading)}>Cancelar</ButtonBase>}
       </FormCardActions>
     </FormCard>
   );

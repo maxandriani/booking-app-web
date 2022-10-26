@@ -9,9 +9,15 @@ export const InputBase = styled.input(({theme}) => css`
   padding: 0.2rem 0.8rem;
   margin: 0;
   font-size: 1rem;
-  flex: 1;
+  flex: 1 0 0;
   width: 100%;
-  max-width: max-content;
+  min-width: 20%;
+  max-width: 100%;
+  display: flex;
+  
+  &[type="date"] {
+    flex: 1 0 0;
+  }
 `);
 
 export const Input = styled(InputBase)(({theme}) => css`
@@ -79,8 +85,12 @@ export const FormCardSection = styled.fieldset`
   border: none;
   padding: 1.5rem 1rem;
   gap: 1rem;
+  align-items: flex-start;
 `;
 
 export const FormCardActions = styled.div`
+  display: flex;
+  gap: 0.5rem;
+  align-content: flex-start;
   padding: 1rem;
 `;

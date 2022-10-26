@@ -1,7 +1,7 @@
 import { useMutation } from '@tanstack/react-query';
 import { useEffect, useState } from 'react';
 import { MdArrowBack } from 'react-icons/md';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import BookingForm from '../../components/bookings/BookingForm';
 import { IconButton } from '../../layouts/buttons/Button';
 import Alert from '../../layouts/communications/Alerts';
@@ -20,6 +20,7 @@ interface AlertInfo {
 function NewBookingView() {
   const [alert, setAlert] = useState<AlertInfo | undefined>(undefined);
   const navigate = useNavigate();
+  const location = useLocation();
   const { mutate, isError, isLoading, error } = useMutation<IBookingResponse, Error, ICreateUpdateBookingBody>(
     booking => createBooking(booking),
     { onSuccess: (data) => navigate(`/bookings/${data.id}`, { state: { message: `Reserva de ${data.place.name} foi criada com sucesso.` } }) });
@@ -46,7 +47,7 @@ function NewBookingView() {
       </AppHeader>
       <AppContent>
         {!!alert && <Alert level={alert.level} message={alert.message} onClose={() => setAlert(undefined)} />}
-        <BookingForm loading={isLoading} onSave={mutate} />
+        <BookingForm booking={location.state} loading={isLoading} onSave={mutate} />
       </AppContent>
     </AppLayout>
   );

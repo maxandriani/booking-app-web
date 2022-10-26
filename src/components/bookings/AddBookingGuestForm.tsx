@@ -38,7 +38,8 @@ const ListItemBtn = styled(ListItem)(({theme}) => css`
 export type AddBookingGuestFormProps = {
   bookingId: string;
   loading?: boolean;
-  onSave: (data: {bookingId: string, guestId: string}) => void;
+  onSave: (data: { bookingId: string, guestId: string }) => void;
+  onAdd: () => void;
 }
 
 function handleSearchQuery(query?: string): ISearchGuestQuery {
@@ -49,9 +50,9 @@ function handleSearchQuery(query?: string): ISearchGuestQuery {
   return filters;
 };
 
-function AddBookingGuestForm({ bookingId, loading, onSave }: AddBookingGuestFormProps) {
+function AddBookingGuestForm({ bookingId, loading, onSave, onAdd }: AddBookingGuestFormProps) {
   const [search, setSearch] = useState('');
-  const { data: guests, isFetching, isError, error } = useQuery(['guests', search],
+  const { data: guests, isFetching, isError, isSuccess, error } = useQuery(['guests', search],
     () => !!search
       ? getGuestCollection({ ...handleSearchQuery(search), sortBy: 'name asc' })
       : Promise.resolve({ items: [], count: 0 }));
@@ -60,6 +61,7 @@ function AddBookingGuestForm({ bookingId, loading, onSave }: AddBookingGuestForm
     event.preventDefault();
     const data = new FormData(event.target as HTMLFormElement);
     setSearch(data.get('search') as string);
+    event.target.dispatchEvent(new Event('reset'));
   }
 
   function coerce(b?: boolean) {
@@ -81,7 +83,7 @@ function AddBookingGuestForm({ bookingId, loading, onSave }: AddBookingGuestForm
           <InputGroup>
             <Input type="search" name="search" placeholder="Pesquisar hóspede" defaultValue={search} disabled={coerce(loading)} />
             <IconButton type="submit" loading={coerce(loading)} disabled={coerce(loading)}><MdOutlineSearch /></IconButton>
-            <IconButton type="button" loading={coerce(loading)} disabled={coerce(loading)}>
+            <IconButton type="button" loading={coerce(loading)} disabled={coerce(loading)} onClick={() => onAdd()}>
               <MdAddCircleOutline />
             </IconButton>
           </InputGroup>
@@ -97,6 +99,7 @@ function AddBookingGuestForm({ bookingId, loading, onSave }: AddBookingGuestForm
               <ListIcon><MdCheck /></ListIcon>
             </ListItemBtn>)}
         </List>}
+        {!!search && isSuccess && !guests?.items && <Alert level="info" message="Sem resultados encontrados" />}
       </CardContent>
     </FormCard>
   );

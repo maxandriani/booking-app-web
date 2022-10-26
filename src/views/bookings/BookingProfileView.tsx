@@ -6,6 +6,7 @@ import AddBookingGuestForm from '../../components/bookings/AddBookingGuestForm';
 import BookingCard from '../../components/bookings/BookingCard';
 import BookingForm from '../../components/bookings/BookingForm';
 import GuestCardList from '../../components/guests/GuestCardList';
+import NewGuestForm from '../../components/guests/NewGuestForm';
 import { Button, IconButton } from '../../layouts/buttons/Button';
 import Alert from '../../layouts/communications/Alerts';
 import AppContent from '../../layouts/structure/AppContent';
@@ -14,6 +15,7 @@ import AppLayout from '../../layouts/structure/AppLayout';
 import AppMainBar from '../../layouts/structure/AppMainBar';
 import AppPageTitle from '../../layouts/structure/AppPageTitle';
 import { addBookingGuest, BookingStatusEnum, cancelBooking, confirmBooking, getBookingByKey, ICreateUpdateBookingBody, removeBookingGuest, unConfirmBooking, updateBooking } from '../../services/bookings-api';
+import { createGuest, ICreateGuestWithContactsBody, IGuestWithContactsResponse } from '../../services/guest-api';
 
 interface AlertInfo {
   level: 'info' | 'error',
@@ -25,6 +27,7 @@ function BookingProfileView() {
   const location = useLocation();
   const [alert, setAlert] = useState<AlertInfo | undefined>();
   const [editMode, setEditMode] = useState(false);
+  const [createGuestMode, setCreateGuestMode] = useState(false);
   const { bookingId } = useParams();
   if (!bookingId) throw new Error('Required parameter bookingId');
 
@@ -58,6 +61,12 @@ function BookingProfileView() {
     (body) => updateBooking(bookingId, body).then(),
     { onSuccess: () => { refetch(); setEditMode(false); } }
   );
+
+  const newGuest = useMutation<void, Error, ICreateGuestWithContactsBody>(
+    (body) => createGuest(body)
+      .then(({ id: guestId }) => addGuest.mutate({ bookingId, guestId }))
+      .then(() => refetch())
+      .then(() => setCreateGuestMode(false)));
 
   // const { mutate, isError, isLoading, isSuccess, error } = useMutation<IBookingResponse, Error, ICreateUpdateBookingBody>(
   //   booking => createBooking(booking),
@@ -115,7 +124,8 @@ function BookingProfileView() {
             </>
           } />}
 
-        <AddBookingGuestForm bookingId={bookingId} onSave={addGuest.mutate} loading={addGuest.isLoading} />
+        {!createGuestMode && <AddBookingGuestForm bookingId={bookingId} onSave={addGuest.mutate} onAdd={() => setCreateGuestMode(true)} loading={addGuest.isLoading} />}
+        {createGuestMode && <NewGuestForm onSave={newGuest.mutate} onCancel={() => setCreateGuestMode(false)} loading={newGuest.isLoading} />}
         <GuestCardList guests={booking.guests} showContactList={false} guestActions={guest =>
           <>
             <Button onClick={() => navigate(`/guests/${guest.id}`)}>

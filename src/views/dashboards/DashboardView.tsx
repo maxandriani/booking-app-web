@@ -55,7 +55,11 @@ export default function DashboardView() {
 
         <Heading>Verificar Disponibilidade</Heading>
         <CheckBookingForm query={query} loading={checkPlaces.isFetching ? true : undefined} onSearch={setQuery} />
-        {checkPlaces.isSuccess && <PlaceCardList places={checkPlaces.data.items} />}
+        {checkPlaces.isSuccess && <PlaceCardList places={checkPlaces.data.items} placeActions={place => <>
+          <Button onClick={() => navigate('/bookings/new', { state: { placeId: place.id, ...query } })}>
+            <span>Reservar!</span>
+          </Button>
+        </>} />}
         
         {(!!actualBookings?.data?.items.length) &&
           <>
