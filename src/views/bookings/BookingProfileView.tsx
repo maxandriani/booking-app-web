@@ -15,7 +15,7 @@ import AppLayout from '../../layouts/structure/AppLayout';
 import AppMainBar from '../../layouts/structure/AppMainBar';
 import AppPageTitle from '../../layouts/structure/AppPageTitle';
 import { addBookingGuest, BookingStatusEnum, cancelBooking, confirmBooking, getBookingByKey, ICreateUpdateBookingBody, removeBookingGuest, unConfirmBooking, updateBooking } from '../../services/bookings-api';
-import { createGuest, ICreateGuestWithContactsBody, IGuestWithContactsResponse } from '../../services/guest-api';
+import { createGuest, ICreateGuestWithContactsBody } from '../../services/guest-api';
 
 interface AlertInfo {
   level: 'info' | 'error',
