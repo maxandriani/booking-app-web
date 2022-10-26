@@ -79,8 +79,8 @@ function BookingCard({ booking, actions }: BookingCardProps) {
           <InfoIcon><FaPlaneArrival /></InfoIcon>
           <DateEntry>
             <Label>Entrada</Label>
-            <DateEmphasis>{booking.checkIn.toLocaleDateString('pt-BR')}</DateEmphasis>
-            <Label>{booking.checkIn.toLocaleDateString('pt-BR', { weekday: 'long' })}</Label>
+            <DateEmphasis>{booking.checkIn.toLocaleDateString('pt-BR', { timeZone: "UTC" })}</DateEmphasis>
+            <Label>{booking.checkIn.toLocaleDateString('pt-BR', { weekday: 'long', timeZone: "UTC" })}</Label>
           </DateEntry>
         </DateBox>
         {/* <MdEast /> */}
@@ -88,8 +88,8 @@ function BookingCard({ booking, actions }: BookingCardProps) {
           <InfoIcon><FaPlaneDeparture /></InfoIcon>
           <DateEntry>
             <Label>Saída</Label>
-            <DateEmphasis>{booking.checkOut.toLocaleDateString('pt-BR')}</DateEmphasis>
-            <Label>{booking.checkOut.toLocaleDateString('pt-BR', { weekday: 'long' })}</Label>
+            <DateEmphasis>{booking.checkOut.toLocaleDateString('pt-BR', { timeZone: "UTC" })}</DateEmphasis>
+            <Label>{booking.checkOut.toLocaleDateString('pt-BR', { weekday: 'long', timeZone: "UTC" })}</Label>
           </DateEntry>
         </DateBox>
       </CardDateContent>

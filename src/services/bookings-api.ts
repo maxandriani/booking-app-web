@@ -22,6 +22,8 @@ export function toBookingStatusEnum(value: BookingStatusEnum): string {
 export interface ISearchBookingsQuery {
   byPlace?: string;
   date?: Date;
+  sinceDate?: Date;
+  untilDate?: Date;
   status?: BookingStatusEnum;
   search?: string;
   take?: number;

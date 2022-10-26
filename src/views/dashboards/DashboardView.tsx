@@ -38,7 +38,7 @@ export default function DashboardView() {
   const [alert, setAlert] = useState<AlertInfo | undefined>(undefined);
   const [query, setQuery] = useState<ISearchAvailablePlacesQuery | undefined>(undefined);
   const actualBookings = useQuery(['bookings', 'today'], () => searchBookings({ date: new Date(), status: BookingStatusEnum.Confirmed, sortBy: 'checkIn asc' }), { suspense: true });
-  const nextBookings = useQuery(['bookings', 'next'], () => searchBookings({ status: BookingStatusEnum.Confirmed, sortBy: 'checkIn asc', take: 4 }), { suspense: true });
+  const nextBookings = useQuery(['bookings', 'next'], () => searchBookings({ status: BookingStatusEnum.Confirmed, sinceDate: new Date(), sortBy: 'checkIn asc', take: 4 }), { suspense: true });
   const checkPlaces = useQuery(['availability', query?.checkIn, query?.checkOut], ({ queryKey: [_, checkIn, checkOut] }) =>
     !!checkIn && !!checkOut
       ? searchAvailablePlaces({ checkIn: coerceDate(checkIn), checkOut: coerceDate(checkOut), sortBy: 'name asc' })

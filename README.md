@@ -40,5 +40,5 @@ To learn React, check out the [React documentation](https://reactjs.org/).
 ## Build and Publish
 
 ```sh
-docker buildx build -t maxandriani/booking-app-web:0.0.0-rc4 -f ./Dockerfile --platform linux/amd64,linux/arm64 --push .
+docker buildx build -t maxandriani/booking-app-web:0.0.0-rc5 -f ./Dockerfile --platform linux/amd64,linux/arm64 --push .
 ```
